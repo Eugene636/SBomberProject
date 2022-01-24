@@ -11,6 +11,7 @@
 #include <stdint.h>
 
 #include "ScreenSingleton.h"
+ScreenSingleton::ScreenSingleton() {}
 ScreenSingleton& ScreenSingleton::getInstance()
 {
     static ScreenSingleton theInstance;

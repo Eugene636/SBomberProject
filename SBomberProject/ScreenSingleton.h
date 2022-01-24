@@ -34,7 +34,7 @@ enum ConsoleColor
         void SetColor(ConsoleColor color);
 
     private:
-        ScreenSingleton() { }
+        ScreenSingleton();
         ScreenSingleton(const ScreenSingleton& root) = delete;
         ScreenSingleton& operator=(const ScreenSingleton&) = delete;
     };

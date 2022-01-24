@@ -21,3 +21,16 @@
 		FileLoggerSingletone(const FileLoggerSingletone& root) = delete;
 		FileLoggerSingletone& operator=(const FileLoggerSingletone&) = delete;
 	};
+	class LoggerSingleton {
+	public:
+		static LoggerSingleton& getInstance();
+
+		void __fastcall WriteToLog_with_num(const std::string& str);
+		void __fastcall WriteToLog_with_num(const std::string& str, int n);
+		void __fastcall WriteToLog_with_num(const std::string& str, double d);
+	private: 
+		int number_of_logstring;
+		LoggerSingleton();
+		LoggerSingleton(const LoggerSingleton& root) = delete;
+		LoggerSingleton& operator=(const LoggerSingleton&) = delete;
+	};
