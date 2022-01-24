@@ -3,16 +3,19 @@
 
 #include "SBomber.h"
 #include "MyTools.h"
+//#include "ScreenSingleton.h"
 
 using namespace std;
+using namespace MyTools;
 
 //========================================================================================================================
 
 int main(void)
 {
-    MyTools::OpenLogFile("log.txt");
+    FileLoggerSingletone::getInstance().OpenLogFile("log.txt");
 
     SBomber game;
+
 
     do {
         game.TimeStart();
@@ -22,7 +25,7 @@ int main(void)
             game.ProcessKBHit();
         }
 
-        MyTools::ClrScr();
+        ScreenSingleton::getInstance().ClrScr();
 
         game.DrawFrame();
         game.MoveObjects();
@@ -32,7 +35,7 @@ int main(void)
 
     } while (!game.GetExitFlag());
 
-    MyTools::CloseLogFile();
+    FileLoggerSingletone::getInstance().CloseLogFile();
 
     return 0;
 }

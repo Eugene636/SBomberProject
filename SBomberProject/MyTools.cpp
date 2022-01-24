@@ -19,19 +19,23 @@ namespace MyTools {
     ofstream logOut;
 
     //=============================================================================================
-
-    void ClrScr()
+     ScreenSingleton& ScreenSingleton::getInstance()
+    {
+        static ScreenSingleton theInstance;
+        return theInstance;
+    }
+    void ScreenSingleton::ClrScr()
     {
         system("cls");
     }
 
-    void __fastcall GotoXY(double x, double y)
+    void __fastcall ScreenSingleton::GotoXY(double x, double y)
     {
         const COORD cc = { short(x), short(y) };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), cc);
     }
 
-    uint16_t GetMaxX()
+    uint16_t ScreenSingleton::GetMaxX()
     {
         HANDLE hWndConsole;
         if (hWndConsole = GetStdHandle(-12))
@@ -47,7 +51,7 @@ namespace MyTools {
         return 0;
     }
 
-    uint16_t GetMaxY()
+    uint16_t ScreenSingleton::GetMaxY()
     {
         HANDLE hWndConsole;
         if (hWndConsole = GetStdHandle(-12))
@@ -62,20 +66,24 @@ namespace MyTools {
         return 0;
     }
 
-    void SetColor(ConsoleColor color)
+    void ScreenSingleton::SetColor(ConsoleColor color)
     {
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleTextAttribute(hConsole, color); // color =  (WORD)((BackgroundColor << 4) | TextColor))
     }
 
     //=============================================================================================
-
-    void __fastcall OpenLogFile(const string& FN)
+    FileLoggerSingletone::FileLoggerSingletone() {}
+    FileLoggerSingletone& FileLoggerSingletone::getInstance() {
+        static FileLoggerSingletone theInstance;
+        return theInstance;
+    }
+    void  FileLoggerSingletone::OpenLogFile(const string& FN)
     {
         logOut.open(FN, ios_base::out);
     }
 
-    void CloseLogFile()
+    void FileLoggerSingletone::CloseLogFile()
     {
         if (logOut.is_open())
         {
@@ -83,7 +91,7 @@ namespace MyTools {
         }
     }
 
-    string GetCurDateTime()
+    string FileLoggerSingletone::GetCurDateTime()
     {
         auto cur = std::chrono::system_clock::now();
         time_t time = std::chrono::system_clock::to_time_t(cur);
@@ -93,15 +101,15 @@ namespace MyTools {
         return string(buf);
     }
 
-    void __fastcall WriteToLog(const string& str)
+    void FileLoggerSingletone::WriteToLog(const string& str)
     {
         if (logOut.is_open())
         {
-            logOut << GetCurDateTime() << " - " << str << endl;
+            logOut << FileLoggerSingletone::getInstance().GetCurDateTime() << " - " << str << endl;
         }
     }
 
-    void __fastcall WriteToLog(const string& str, int n)
+    void FileLoggerSingletone::WriteToLog(const string& str, int n)
     {
         if (logOut.is_open())
         {
@@ -109,7 +117,7 @@ namespace MyTools {
         }
     }
 
-    void __fastcall WriteToLog(const string& str, double d)
+    void FileLoggerSingletone::WriteToLog(const string& str, double d)
     {
         if (logOut.is_open())
         {
