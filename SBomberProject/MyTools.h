@@ -12,7 +12,7 @@ namespace MyTools {
 
 	//=============================================================================================
 
-	/*void ClrScr();
+	void ClrScr();
 
 	void __fastcall GotoXY(double x, double y);
 
@@ -20,11 +20,11 @@ namespace MyTools {
 
 	uint16_t GetMaxY();
 
-    void SetColor(ConsoleColor color);*/
+    void SetColor(ConsoleColor color);
 
 	//=============================================================================================
 
-	/*void __fastcall OpenLogFile(const std::string& FN);
+	void __fastcall OpenLogFile(const std::string& FN);
 
 	void CloseLogFile();
 
@@ -32,7 +32,7 @@ namespace MyTools {
 
 	void __fastcall WriteToLog(const std::string& str, int n);
 
-	void __fastcall WriteToLog(const std::string& str, double d);*/
+	void __fastcall WriteToLog(const std::string& str, double d);
 
 	//=============================================================================================
 

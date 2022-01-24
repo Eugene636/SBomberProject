@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <string>
 
-namespace MyTools {
 	class FileLoggerSingletone {
 	public:
 		std::string GetCurDateTime();
@@ -22,4 +21,3 @@ namespace MyTools {
 		FileLoggerSingletone(const FileLoggerSingletone& root) = delete;
 		FileLoggerSingletone& operator=(const FileLoggerSingletone&) = delete;
 	};
-}

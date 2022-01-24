@@ -21,8 +21,6 @@ enum ConsoleColor
     CC_Yellow,
     CC_White
 };
-namespace MyTools {
- 
     class ScreenSingleton
     {
     public:
@@ -40,4 +38,3 @@ namespace MyTools {
         ScreenSingleton(const ScreenSingleton& root) = delete;
         ScreenSingleton& operator=(const ScreenSingleton&) = delete;
     };
-}
