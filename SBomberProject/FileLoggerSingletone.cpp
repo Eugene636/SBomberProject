@@ -54,7 +54,7 @@ void FileLoggerSingletone::WriteToLog(const string& str, int n)
 {
     if (logOut.is_open())
     {
-        logOut << GetCurDateTime() << " - " << str << n << endl;
+        logOut << FileLoggerSingletone::getInstance().GetCurDateTime() << " - " << str << n << endl;
     }
 }
 
@@ -62,6 +62,26 @@ void FileLoggerSingletone::WriteToLog(const string& str, double d)
 {
     if (logOut.is_open())
     {
-        logOut << GetCurDateTime() << " - " << str << d << endl;
+        logOut << FileLoggerSingletone::getInstance().GetCurDateTime() << " - " << str << d << endl;
     }
+}
+LoggerSingleton::LoggerSingleton() {}
+LoggerSingleton& LoggerSingleton::getInstance() {
+    static int count = 1;
+    static LoggerSingleton theInstance;
+    theInstance.number_of_logstring = count++;
+    return theInstance;
+}
+
+void __fastcall LoggerSingleton::WriteToLog_with_num(const std::string& str) {
+    logOut << number_of_logstring << ' ';
+    FileLoggerSingletone::getInstance().WriteToLog(str);
+}
+void __fastcall LoggerSingleton::WriteToLog_with_num(const std::string& str, int n) {
+    logOut << number_of_logstring << ' ';
+    FileLoggerSingletone::getInstance().WriteToLog(str, n);
+}
+void __fastcall LoggerSingleton::WriteToLog_with_num(const std::string& str, double d) {
+    logOut << number_of_logstring << ' ';
+    FileLoggerSingletone::getInstance().WriteToLog(str, d);
 }
