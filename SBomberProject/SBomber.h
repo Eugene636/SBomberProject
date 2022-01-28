@@ -7,6 +7,7 @@
 #include "Bomb.h"
 #include "Ground.h"
 #include "Tank.h"
+#include "SBomber_command.h"
 
 class SBomber
 {
@@ -26,7 +27,8 @@ public:
     void CheckObjects();
 
 private:
-
+    void CommandExecuter(IAbstract_command*);
+    void CommandExecuter(IAbstract_command*, double);
     void CheckPlaneAndLevelGUI();
     void CheckBombsAndGround();
     void __fastcall CheckDestoyableObjects(Bomb* pBomb);

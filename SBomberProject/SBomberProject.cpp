@@ -3,7 +3,6 @@
 
 #include "SBomber.h"
 #include "MyTools.h"
-//#include "ScreenSingleton.h"
 
 using namespace std;
 using namespace MyTools;

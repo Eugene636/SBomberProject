@@ -163,6 +163,7 @@
     <ClInclude Include="MyTools.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="SBomber.h" />
+    <ClInclude Include="SBomber_command.h" />
     <ClInclude Include="ScreenSingleton.h" />
     <ClInclude Include="Tank.h" />
   </ItemGroup>
