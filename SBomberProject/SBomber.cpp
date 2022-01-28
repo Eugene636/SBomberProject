@@ -8,6 +8,7 @@
 #include "Ground.h"
 #include "Tank.h"
 #include "House.h"
+#include "SBomber_command.h"
 
 using namespace std;
 using namespace MyTools;
@@ -157,28 +158,14 @@ void SBomber::CheckDestoyableObjects(Bomb * pBomb)
 
 void SBomber::DeleteDynamicObj(DynamicObject* pObj)
 {
-    auto it = vecDynamicObj.begin();
-    for (; it != vecDynamicObj.end(); it++)
-    {
-        if (*it == pObj)
-        {
-            vecDynamicObj.erase(it);
-            break;
-        }
-    }
+    DynamicObjectDelete_command command (pObj, vecDynamicObj);
+    CommandExecuter(&command);
 }
 
 void SBomber::DeleteStaticObj(GameObject* pObj)
 {
-    auto it = vecStaticObj.begin();
-    for (; it != vecStaticObj.end(); it++)
-    {
-        if (*it == pObj)
-        {
-            vecStaticObj.erase(it);
-            break;
-        }
-    }
+    StaticObjectDelete_command command (pObj, vecStaticObj);
+    CommandExecuter(&command);
 }
 
 vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const
@@ -347,22 +334,107 @@ void SBomber::TimeFinish()
 
 void SBomber::DropBomb()
 {
-    if (bombsNumber > 0)
+    D_BombDecorator command(vecDynamicObj);
+    CommandExecuter(&command, 2);
+}
+StaticObjectDelete_command::StaticObjectDelete_command(GameObject* _pObj, std::vector <GameObject*>& _vObj) :
+    pObj(_pObj), vObj(_vObj) {}
+DynamicObjectDelete_command::DynamicObjectDelete_command(DynamicObject* _pObj, std::vector <DynamicObject*>& _vObj) :
+    pObj(_pObj), vObj(_vObj) {}
+void DynamicObjectDelete_command::Execute(const Plane* pplane, uint16_t& bombs,
+    const double& speed, const CraterSize& cr_size, int16_t& scores) {}
+void StaticObjectDelete_command::Execute() {
+        auto it = vObj.begin();
+        for (; it != vObj.end(); it++)
+        {
+            if (*it == pObj)
+            {
+                vObj.erase(it);
+                break;
+            }
+        }
+}
+void DynamicObjectDelete_command::Execute() {
+    auto it = vObj.begin();
+    for (; it != vObj.end(); it++)
+    {
+        if (*it == pObj)
+        {
+            vObj.erase(it);
+            break;
+        }
+    }
+}
+void D_Bomb::Execute(const Plane* pplane, uint16_t& bombs,
+    const double& speed, const CraterSize& cr_size, int16_t& scores) {
+    if (bombs > 0)
     {
         FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
 
-        Plane* pPlane = FindPlane();
-        double x = pPlane->GetX() + 4;
-        double y = pPlane->GetY() + 2;
+        //Plane* pPlane = FindPlane();
+        double x = pplane->GetX() + 4;
+        double y = pplane->GetY() + 2;
 
         Bomb* pBomb = new Bomb;
         pBomb->SetDirection(0.3, 1);
-        pBomb->SetSpeed(2);
+        pBomb->SetSpeed(speed);
         pBomb->SetPos(x, y);
-        pBomb->SetWidth(SMALL_CRATER_SIZE);
+        pBomb->SetWidth(cr_size);
 
-        vecDynamicObj.push_back(pBomb);
-        bombsNumber--;
-        score -= Bomb::BombCost;
+        vObj.push_back(pBomb);
+        bombs--;
+        scores -= Bomb::BombCost;
     }
 }
+void D_BombDecorator::Execute(const Plane* pplane, uint16_t& bombs,
+    const double& speed, const CraterSize& cr_size, int16_t& scores) {
+    if (bombs > 0)
+    {
+        FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
+
+        //Plane* pPlane = FindPlane();
+        double x = pplane->GetX() + 4;
+        double y = pplane->GetY() + 2;
+
+        BombDecorator* pBombDecorator = new BombDecorator;
+        pBombDecorator->SetDirection(0.3, 1);
+        pBombDecorator->SetSpeed(speed);
+        pBombDecorator->SetPos(x, y);
+        pBombDecorator->SetWidth(cr_size);
+
+        vObj.push_back(pBombDecorator);
+        bombs--;
+        scores -= Bomb::BombCost;
+    }
+}
+void D_BombDecorator::Execute() {}
+void D_Bomb::Execute() {}
+D_BombDecorator::D_BombDecorator(std::vector <DynamicObject*>& _vObj) : vObj(_vObj) {}
+void StaticObjectDelete_command::Execute(const Plane* pplane, uint16_t& bombs,
+    const double& speed, const CraterSize& cr_size, int16_t& scores) {}
+void SBomber::CommandExecuter(IAbstract_command* command) {
+    command->Execute();
+}
+void SBomber::CommandExecuter(IAbstract_command* command, double sp) {
+    Plane* pplane = FindPlane();
+    sp = 2;
+    command->Execute(pplane, bombsNumber, sp, SMALL_CRATER_SIZE, score);
+}
+/*if (bombsNumber > 0)
+ {
+     FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
+
+     Plane* pPlane = FindPlane();
+     double x = pPlane->GetX() + 4;
+     double y = pPlane->GetY() + 2;
+
+     Bomb* pBomb = new Bomb;
+     pBomb->SetDirection(0.3, 1);
+     pBomb->SetSpeed(2);
+     pBomb->SetPos(x, y);
+     pBomb->SetWidth(SMALL_CRATER_SIZE);
+
+     vecDynamicObj.push_back(pBomb);
+     bombsNumber--;
+     score -= Bomb::BombCost;
+ }*/
