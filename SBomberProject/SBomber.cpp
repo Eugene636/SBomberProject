@@ -127,12 +127,16 @@ void SBomber::CheckBombsAndGround()
     BombIterator bomb_iterator(vecDynamicObj);
     Ground* pGround = FindGround();
     const double y = pGround->GetY();
+    size_t i = 0;
+
     for (Bomb* n : bomb_iterator) {
+
         if (n->GetY() >= y) {
             pGround->AddCrater(n->GetX());
             CheckDestoyableObjects(n);
             DeleteDynamicObj(n);
         }
+        i++;
     }
 
 }

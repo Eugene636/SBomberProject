@@ -24,6 +24,7 @@ public:
     std::vector <Bomb*>& all_objects();
     const std::vector<Bomb*>::iterator& operator++();
     const std::vector<Bomb*>::iterator& operator++(int);
+
     void erase(size_t n);
     int size();
 };
