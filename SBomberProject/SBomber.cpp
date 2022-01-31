@@ -8,6 +8,7 @@
 #include "Ground.h"
 #include "Tank.h"
 #include "House.h"
+#include "BombIterator.h"
 
 using namespace std;
 using namespace MyTools;
@@ -123,19 +124,18 @@ void SBomber::CheckPlaneAndLevelGUI()
 
 void SBomber::CheckBombsAndGround() 
 {
-    vector<Bomb*> vecBombs = FindAllBombs();
+    BombIterator bomb_iterator(vecDynamicObj);
     Ground* pGround = FindGround();
     const double y = pGround->GetY();
-    for (size_t i = 0; i < vecBombs.size(); i++)
-    {
-        if (vecBombs[i]->GetY() >= y) // Пересечение бомбы с землей
-        {
-            pGround->AddCrater(vecBombs[i]->GetX());
-            CheckDestoyableObjects(vecBombs[i]);
-            DeleteDynamicObj(vecBombs[i]);
+    size_t i = 0;
+    for (auto pBomb : bomb_iterator) {
+        if (pBomb->GetY() >= y) {
+            pGround->AddCrater(pBomb->GetX());
+            CheckDestoyableObjects(pBomb);
+            bomb_iterator.erase(i);
         }
+        i++;
     }
-
 }
 
 void SBomber::CheckDestoyableObjects(Bomb * pBomb)
