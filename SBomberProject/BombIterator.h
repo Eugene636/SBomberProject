@@ -25,7 +25,9 @@ public:
     std::vector<Bomb*>::iterator& operator++();
     std::vector<Bomb*>::iterator& operator++(int);
     void erase(size_t n);
+    int size();
 };
+int BombIterator::size() {return bomb_vector.size(); }
 void BombIterator::erase(size_t n) {
     auto it = bomb_vector.begin();
     bomb_vector.erase(it + n);

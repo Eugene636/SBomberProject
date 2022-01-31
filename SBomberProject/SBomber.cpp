@@ -127,14 +127,22 @@ void SBomber::CheckBombsAndGround()
     BombIterator bomb_iterator(vecDynamicObj);
     Ground* pGround = FindGround();
     const double y = pGround->GetY();
-    size_t i = 0;
-    for (auto pBomb : bomb_iterator) {
-        if (pBomb->GetY() >= y) {
-            pGround->AddCrater(pBomb->GetX());
-            CheckDestoyableObjects(pBomb);
-            bomb_iterator.erase(i);
+    std::vector <bool> del;
+    for (Bomb* n : bomb_iterator) {
+
+        if (n->GetY() >= y) {
+            del.push_back(true);
+            pGround->AddCrater(n->GetX());
+            CheckDestoyableObjects(n);
+            DeleteDynamicObj(n);
         }
-        i++;
+        else del.push_back(false);
+        int i = 0;
+        for (bool n : del) {
+            if (n) bomb_iterator.erase(i);
+            i++;
+        }
+
     }
 }
 
