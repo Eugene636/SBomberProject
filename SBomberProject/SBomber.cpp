@@ -6,8 +6,9 @@
 #include "SBomber.h"
 #include "Bomb.h"
 #include "Ground.h"
-#include "Tank.h"
+#include "TankAdaptee.h"
 #include "House.h"
+#include "BombIterator.h"
 
 using namespace std;
 using namespace MyTools;
@@ -48,12 +49,12 @@ SBomber::SBomber()
     pGr->SetWidth(width - 2);
     vecStaticObj.push_back(pGr);
 
-    Tank* pTank = new Tank;
+    TankAdapter* pTank = new TankAdapter;
     pTank->SetWidth(13);
     pTank->SetPos(30, groundY - 1);
     vecStaticObj.push_back(pTank);
 
-    pTank = new Tank;
+    pTank = new TankAdapter;
     pTank->SetWidth(13);
     pTank->SetPos(50, groundY - 1);
     vecStaticObj.push_back(pTank);
@@ -123,20 +124,24 @@ void SBomber::CheckPlaneAndLevelGUI()
 
 void SBomber::CheckBombsAndGround() 
 {
-    vector<Bomb*> vecBombs = FindAllBombs();
+    BombIterator bomb_iterator(vecDynamicObj);
     Ground* pGround = FindGround();
     const double y = pGround->GetY();
-    for (size_t i = 0; i < vecBombs.size(); i++)
-    {
-        if (vecBombs[i]->GetY() >= y) // Пересечение бомбы с землей
-        {
-            pGround->AddCrater(vecBombs[i]->GetX());
-            CheckDestoyableObjects(vecBombs[i]);
-            DeleteDynamicObj(vecBombs[i]);
+    size_t i = 0;
+
+    for (Bomb* n : bomb_iterator) {
+
+        if (n->GetY() >= y) {
+            pGround->AddCrater(n->GetX());
+            CheckDestoyableObjects(n);
+            DeleteDynamicObj(n);
         }
+        i++;
     }
 
 }
+
+
 
 void SBomber::CheckDestoyableObjects(Bomb * pBomb)
 {
@@ -184,11 +189,11 @@ void SBomber::DeleteStaticObj(GameObject* pObj)
 vector<DestroyableGroundObject*> SBomber::FindDestoyableGroundObjects() const
 {
     vector<DestroyableGroundObject*> vec;
-    Tank* pTank;
+    TankAdapter* pTank;
     House* pHouse;
     for (size_t i = 0; i < vecStaticObj.size(); i++)
     {
-        pTank = dynamic_cast<Tank*>(vecStaticObj[i]);
+        pTank = dynamic_cast<TankAdapter*>(vecStaticObj[i]);
         if (pTank != nullptr)
         {
             vec.push_back(pTank);
