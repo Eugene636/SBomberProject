@@ -22,8 +22,8 @@ public:
     Bomb*& operator [] (size_t);
     std::vector<Bomb*>::iterator end();
     std::vector <Bomb*>& all_objects();
-    std::vector<Bomb*>::iterator& operator++();
-    std::vector<Bomb*>::iterator& operator++(int);
+    const std::vector<Bomb*>::iterator& operator++();
+    const std::vector<Bomb*>::iterator& operator++(int);
     void erase(size_t n);
     int size();
 };
@@ -32,10 +32,11 @@ void BombIterator::erase(size_t n) {
     auto it = bomb_vector.begin();
     bomb_vector.erase(it + n);
 }
-std::vector<Bomb*>::iterator& BombIterator::operator++ () {
+const std::vector<Bomb*>::iterator& BombIterator::operator++ () {
     return (++Iterator);
 }
-std::vector<Bomb*>::iterator& BombIterator::operator++ (int) {
+const std::vector<Bomb*>::iterator& BombIterator::operator++ (int) {
+    
     std::vector<Bomb*>::iterator it = this->Iterator;
     Iterator++;
     return it;
