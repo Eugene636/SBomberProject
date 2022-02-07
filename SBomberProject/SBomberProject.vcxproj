@@ -150,6 +150,7 @@
     <ClCompile Include="SBomberProject.cpp" />
     <ClCompile Include="ScreenSingleton.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="Visitor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="SBomber.h" />
     <ClInclude Include="ScreenSingleton.h" />
     <ClInclude Include="Tank.h" />
+    <ClInclude Include="Visitor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

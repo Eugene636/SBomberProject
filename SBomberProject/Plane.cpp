@@ -4,6 +4,7 @@
 #include "Plane.h"
 #include "MyTools.h"
 
+
 using namespace std;
 using namespace MyTools;
 
@@ -18,4 +19,8 @@ void Plane::Draw() const
     cout << "\\\\\\\\";
     ScreenSingleton::getInstance().GotoXY(x + 3, y + 1);
     cout << "////";
+}
+
+void Plane::accept(Visitor& e) {
+    e.log(*this);
 }
