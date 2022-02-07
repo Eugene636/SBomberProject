@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-#include "Visitor.h"
 #include "GameObject.h"
 
 
@@ -15,7 +14,6 @@ public:
     inline void SetDirection(double dx, double dy) { xDirction = dx; yDirection = dy; }
     
     virtual void Move(uint16_t time) { x += xDirction * speed * time * 0.001; y += yDirection * speed * time * 0.001; };
-    virtual void accept(Visitor& v) {}
     double GetSpeed() const { return speed; }
     double GetXdirection() const { return xDirction; }
     double GetYdirection() const { return yDirection; }

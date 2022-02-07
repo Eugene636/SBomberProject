@@ -20,7 +20,3 @@ void Plane::Draw() const
     ScreenSingleton::getInstance().GotoXY(x + 3, y + 1);
     cout << "////";
 }
-
-void Plane::accept(Visitor& e) {
-    e.log(*this);
-}
