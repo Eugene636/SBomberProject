@@ -1,6 +1,7 @@
 
 #include <conio.h>
 #include <windows.h>
+#include <iostream>
 
 #include "MyTools.h"
 #include "SBomber.h"
@@ -21,9 +22,15 @@ SBomber::SBomber()
     fps(0),
     bombsNumber(10),
     score(0)
-{
-    FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
+{   
 
+    cout << "What house do you want?" << endl;
+    detail dtl;
+    int tpe;
+    cin >> tpe;
+ //   detail dtl = Simple_house;
+    static_cast <detail> (tpe);
+    FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
     Plane* p = new Plane;
     p->SetDirection(1, 0.1);
     p->SetSpeed(4);
@@ -58,10 +65,13 @@ SBomber::SBomber()
     pTank->SetPos(50, groundY - 1);
     vecStaticObj.push_back(pTank);
 
-    House * pHouse = new House;
+    HouseBuilderA builder;
+    HouseDirector director;
+    House* pHouse = director.Construct(builder);
     pHouse->SetWidth(13);
     pHouse->SetPos(80, groundY - 1);
     vecStaticObj.push_back(pHouse);
+    
 
     /*
     Bomb* pBomb = new Bomb;
@@ -109,6 +119,7 @@ void SBomber::CheckObjects()
 {
     FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
 
+  
     CheckPlaneAndLevelGUI();
     CheckBombsAndGround();
 };
@@ -262,7 +273,6 @@ LevelGUI* SBomber::FindLevelGUI() const
             return p;
         }
     }
-
     return nullptr;
 }
 
@@ -365,4 +375,9 @@ void SBomber::DropBomb()
         bombsNumber--;
         score -= Bomb::BombCost;
     }
+}
+
+void CollisionDetector::CheckPlaneAndLevelGUI(bool& exit) {
+    if (pSBomber->FindPlane()->GetX() > pSBomber->FindLevelGUI()->GetFinishX()) exit = true;
+    return;
 }
