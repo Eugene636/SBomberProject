@@ -3,7 +3,6 @@
 #include "DynamicObject.h"
 #ifndef Bomb_H
 #define Bomb_H
-class Viziter;
 class Bomb : public DynamicObject
 {
 public:
@@ -19,5 +18,5 @@ private:
 #define Viziter_H
 class Plane;
 #include "Viziter.h"
-#include "Plane.h"
+//#include "Plane.h"
 #endif
