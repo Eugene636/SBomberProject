@@ -7,6 +7,17 @@
 #include "Bomb.h"
 #include "Ground.h"
 #include "Tank.h"
+class SBomber;
+class CollisionDetector {
+private:
+    SBomber* pSBomber;
+public:
+    CollisionDetector(SBomber* pSB) : pSBomber(pSB) {}
+    CollisionDetector() = delete;
+    void CheckPlaneAndLevelGUI();
+    void CheckBombsAndGround();
+    void CheckDestoyableObjects(Bomb* pBomb);
+};
 class SBomber
 {
 public:
@@ -48,17 +59,10 @@ private:
     uint64_t startTime, finishTime, passedTime;
     uint16_t bombsNumber, deltaTime, fps;
     int16_t score;
+
+    CollisionDetector detector;
     friend class CollisionDetector;
 
 };
 
-class CollisionDetector {
-private:
-    SBomber* pSBomber;
-public:
-    CollisionDetector(SBomber* pSB) : pSBomber(pSB) {}
-    CollisionDetector() = delete;
-    void CheckPlaneAndLevelGUI(bool&);
-    void CheckBombsAndGround();
-    void CheckDestoyableObjects(Bomb* pBomb);
-};
+

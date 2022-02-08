@@ -15,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
-    <ClInclude Include="CollisionDetector.h" />
     <ClInclude Include="FileLoggerSingletone.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="DynamicObject.h" />
