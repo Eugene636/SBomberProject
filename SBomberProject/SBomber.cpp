@@ -133,9 +133,12 @@ void SBomber::CheckBombsAndGround()
         {
             pGround->AddCrater(vecBombs[i]->GetX());
             DestroyableGroundObject* destroy = vecBombs[i] ->CheckDestroyableObjects();
-            score = destroy->GetScore();
-            DeleteStaticObj(destroy);
-            DeleteDynamicObj(vecBombs[i]);
+            if (destroy != nullptr) {
+                score = destroy->GetScore();
+                DeleteStaticObj(destroy);
+                DeleteDynamicObj(vecBombs[i]);
+            }
+            else DeleteDynamicObj(vecBombs[i]);
         }
     }
 
