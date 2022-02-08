@@ -13,3 +13,8 @@ void Bomb::Draw() const
     ScreenSingleton::getInstance().GotoXY(x, y);
     cout << "*";
 }
+
+void Bomb::accept(const Viziter& e) {
+
+    e.log(*this);
+}
