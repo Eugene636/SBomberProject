@@ -100,6 +100,7 @@ void SBomber::MoveObjects()
     {
         if (vecDynamicObj[i] != nullptr)
         {
+            vecDynamicObj[i]->accept(viziter);
             vecDynamicObj[i]->Move(deltaTime);
         }
     }
@@ -131,13 +132,18 @@ void SBomber::CheckBombsAndGround()
         if (vecBombs[i]->GetY() >= y) // Пересечение бомбы с землей
         {
             pGround->AddCrater(vecBombs[i]->GetX());
-            CheckDestoyableObjects(vecBombs[i]);
-            DeleteDynamicObj(vecBombs[i]);
+            DestroyableGroundObject* destroy = vecBombs[i] ->CheckDestroyableObjects();
+            if (destroy != nullptr) {
+                score = destroy->GetScore();
+                DeleteStaticObj(destroy);
+                DeleteDynamicObj(vecBombs[i]);
+            }
+            else DeleteDynamicObj(vecBombs[i]);
         }
     }
 
 }
-
+/*
 void SBomber::CheckDestoyableObjects(Bomb * pBomb)
 {
     vector<DestroyableGroundObject*> vecDestoyableObjects = FindDestoyableGroundObjects();
@@ -154,6 +160,7 @@ void SBomber::CheckDestoyableObjects(Bomb * pBomb)
         }
     }
 }
+*/
 
 void SBomber::DeleteDynamicObj(DynamicObject* pObj)
 {
@@ -355,7 +362,7 @@ void SBomber::DropBomb()
         double x = pPlane->GetX() + 4;
         double y = pPlane->GetY() + 2;
 
-        Bomb* pBomb = new Bomb;
+        Bomb* pBomb = new Bomb (FindDestoyableGroundObjects());
         pBomb->SetDirection(0.3, 1);
         pBomb->SetSpeed(2);
         pBomb->SetPos(x, y);

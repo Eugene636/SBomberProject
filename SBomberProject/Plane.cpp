@@ -19,3 +19,8 @@ void Plane::Draw() const
     ScreenSingleton::getInstance().GotoXY(x + 3, y + 1);
     cout << "////";
 }
+
+void Plane::accept(const Viziter& e) {
+    e.log(*this);
+}
+
