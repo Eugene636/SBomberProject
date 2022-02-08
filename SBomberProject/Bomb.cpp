@@ -29,7 +29,6 @@ void Bomb::AddObserver(DestroyableGroundObject* pObject) {
 
 DestroyableGroundObject* Bomb::CheckDestroyableObjects() {
 
- //   vector<DestroyableGroundObject*> vecDestoyableObjects = FindDestoyableGroundObjects();
     const double size = this->GetWidth();
     const double size_2 = size / 2;
     for (size_t i = 0; i < observers.size(); i++)
@@ -39,8 +38,6 @@ DestroyableGroundObject* Bomb::CheckDestroyableObjects() {
         if (observers[i]->isInside(x1, x2))
         {
             return observers[i];
- //           score += observers[i]->GetScore();
- //           DeleteStaticObj(vecDestoyableObjects[i]);
         }
     }
     return nullptr;
