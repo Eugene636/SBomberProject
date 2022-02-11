@@ -1,13 +1,15 @@
 
 #include <conio.h>
 #include <windows.h>
-
+#include <cstdlib>
+#include <iostream>
 #include "MyTools.h"
 #include "SBomber.h"
 #include "Bomb.h"
 #include "Ground.h"
 #include "Tank.h"
 #include "House.h"
+
 
 using namespace std;
 using namespace MyTools;
@@ -23,13 +25,22 @@ SBomber::SBomber()
     score(0)
 {
     FileLoggerSingletone::getInstance().WriteToLog(string(__FUNCTION__) + " was invoked");
-
-    Plane* p = new Plane;
-    p->SetDirection(1, 0.1);
-    p->SetSpeed(4);
-    p->SetPos(5, 10);
-    vecDynamicObj.push_back(p);
-
+    std::srand(std::time(nullptr));
+    int i = rand() % 2;
+    if (i == 0) {
+        BigPlane* p = new BigPlane;
+        p->SetDirection(1, 0.1);
+        p->SetSpeed(4);
+        p->SetPos(5, 10);
+        vecDynamicObj.push_back(p);
+    }
+    if (i == 1) {
+        ColorPlane* p = new ColorPlane;
+        p->SetDirection(1, 0.1);
+        p->SetSpeed(4);
+        p->SetPos(5, 10);
+        vecDynamicObj.push_back(p);
+    }
     LevelGUI* pGUI = new LevelGUI;
     pGUI->SetParam(passedTime, fps, bombsNumber, score);
     const uint16_t maxX = ScreenSingleton::getInstance().GetMaxX();

@@ -1,6 +1,6 @@
 
 #include <iostream>
-
+#include <cstdlib>
 #include "Tank.h"
 #include "MyTools.h"
 
@@ -41,4 +41,18 @@ void Tank::Draw() const
 	cout << "    #####";
 	ScreenSingleton::getInstance().GotoXY(x,y);
 	cout << " ###########";
+}
+
+Tank::Tank() : mediator(Mediator::getInstance()) {
+	mediator.AddTank(this);
+}
+
+Tank::~Tank() {
+	mediator.DeleteTank(this);
+}
+
+void Tank::send_message() {
+	std::srand(std::time(nullptr));
+	int f = (std::rand())%4;
+	mediator.Take_message(messages[f], this);
 }

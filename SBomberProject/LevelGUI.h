@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include "GameObject.h"
+#include "Tank.h"
 
 class LevelGUI : public GameObject {
 public:
