@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <vector>
 #include "LevelGUI.h"
 #include "MyTools.h"
 
@@ -9,7 +9,8 @@ using namespace MyTools;
 void LevelGUI::Draw() const
 {
     ScreenSingleton::getInstance().SetColor(CC_White);
-
+    static vector <string>* Tank_message = Mediator::getInstance().Get_message();;
+    static vector <double>* Tank_position = Mediator::getInstance().Get_tank_position();;
     ScreenSingleton::getInstance().GotoXY(x, y);
     char* buf = new (nothrow) char[width + 1];
     if (buf == nullptr)
@@ -40,6 +41,17 @@ void LevelGUI::Draw() const
     cout << "BombsNum: " << bombsNumber;
     ScreenSingleton::getInstance().GotoXY(62, 1);
     cout << "Score: " << score;
+    static int i = (passedTime/1000.0);
+    if (i + 3 < (passedTime / 1000.0)) {
+        Tank_message = Mediator::getInstance().Get_message();
+        Tank_position = Mediator::getInstance().Get_tank_position();
+    }
+    for (int i = 0; i < Tank_message->size(); i++) {
+        double pos = (*Tank_position)[i];
+        ScreenSingleton::getInstance().GotoXY(pos, 25);
+        cout << (*Tank_message)[i];
+    }
+    
 }
 
 void __fastcall LevelGUI::SetParam(uint64_t passedTimeNew, uint64_t fpsNew, uint16_t bombsNumberNew, int16_t scoreNew)
